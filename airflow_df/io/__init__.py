@@ -7,7 +7,7 @@ import pandas as pd
 import pickle
 import struct
 import os
-
+import math
 olga = Olga()
 csv = CSVFormatter()
 
@@ -322,8 +322,8 @@ class IO:
 
     @Helpers.check_airflow_task_args
     @staticmethod
-    def read_data_lake(mongo_user:str, mongo_password:str, host:str, port:int = 27017, **kwargs):
-        data_lake = DataLake(mongo_user, mongo_password, host, port)
+    def read_data_lake(mongo_user:str, mongo_password:str, host:str, port:int = 27017, limit:int = math.inf, **kwargs):
+        data_lake = DataLake(mongo_user, mongo_password, host, port, limit)
         return data_lake.read(**kwargs)
     
     @Helpers.check_airflow_task_args
@@ -349,6 +349,12 @@ class IO:
 
         #     data_warehouse.send_bulk_tag_values_blob(tag_values)
 
+    @Helpers.check_airflow_task_args
+    @staticmethod
+    def save_csv(filepath, filename, df: pd.DataFrame, **kwargs):
+        
+        df.to_csv(os.path.join(filepath, filename))
+    
 
     @Helpers.check_airflow_task_args
     @staticmethod

@@ -3,21 +3,21 @@ import pandas as pd
 import numpy as np
 from types import GeneratorType
 from pymongo import MongoClient
-
+import math
 class DataLake:
     """
     Reads data lake files. 
     """
     __file = namedtuple("File", "title tpl_df genkey tpl_serialized meta")
 
-    def __init__(self, mongo_user: str, mongo_password: str, host: str, port:int = 27017):
+    def __init__(self, mongo_user: str, mongo_password: str, host: str, port:int = 27017, limit:int = math.inf):
         self.__mongo_user = mongo_user
         self.__mongo_password = mongo_password
         self.__host = host
         self.__port = port
         self.__query = {}
         self.__last_case_id = None
-
+        self.__limit = limit
         MONGO_URI = f"mongodb://{self.__mongo_user}:{self.__mongo_password}@{self.__host}:{self.__port}/"
 
         client = MongoClient(MONGO_URI, maxPoolSize = 5)
@@ -87,7 +87,8 @@ class DataLake:
             if are_there_cases:
                 for case in case_found:
                     yield self.read_file(case)
-
+            if counter >= self.__limit:
+                break
     def query_maker(
             self,
             project=None, 
