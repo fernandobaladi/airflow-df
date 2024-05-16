@@ -77,7 +77,7 @@ class DataLake:
         while are_there_cases:
             if(self.__last_case_id is not None):
                 self.__query['_id'] = {'$gt': self.__last_case_id}
-            case_found = self.info_case.find(self.__query).limit(1)
+            case_found = self.info_case.find(self.__query).sort('_id').limit(1)
             case_found = list(case_found)
             counter += 1
 

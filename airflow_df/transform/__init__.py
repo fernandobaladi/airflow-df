@@ -2055,7 +2055,10 @@ class Transform:
         df_columns = df.columns.to_list()
         
         if('GTSOUR_SOURCE_IN_Source_mass_rate_KG/S' in df_columns):
-            if(list(df['GTLEAK_LEAK_LEAK_Leakage_total_mass_flow_rate_KG/S'].unique()) == [0]):
+            if(
+                list(df['GTLEAK_LEAK_LEAK_Leakage_total_mass_flow_rate_KG/S'].unique()) == [0] or
+                any(element > 0 for element in list(df['GTSOUR_SOURCE_IN_Source_mass_rate_KG/S'].unique()))
+            ):
             
                 return True
             else:
