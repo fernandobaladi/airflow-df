@@ -2203,3 +2203,22 @@ class Transform:
         return expanded_dataframe
 
 
+    @Helpers.check_airflow_task_args
+    @staticmethod    
+    def repeat_value_from_minute_1(df: pd.DataFrame):
+        """
+        This function takes a pandas DataFrame as input and repeats the value at second 60 for the first 60 seconds.
+
+        Parameters:
+        df (pd.DataFrame): Input DataFrame. It is expected to have a time index.
+
+        Returns:
+        df (pd.DataFrame): Output DataFrame with the value at second 60 repeated for the first 60 seconds.
+
+        Example:
+        >>> df = pd.DataFrame({'value': range(0, 121)}, index=pd.date_range(start='1/1/2022', periods=121, freq='T'))
+        >>> df = repeat_value_from_minute_1(df)
+        """
+
+        df.loc[:59] = df.loc[60].values
+        return df
