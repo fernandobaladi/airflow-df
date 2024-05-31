@@ -2208,7 +2208,8 @@ class Transform:
     def repeat_value_from_minute_1(df: pd.DataFrame):
         """
         This function takes a pandas DataFrame as input and repeats the value at second 60 for the first 60 seconds.
-
+        WARNING: This function assumes that each row is a second and it takes the position 60 assuming as minute 1.
+        WARNING: This function modifies the input DataFrame in place.
         Parameters:
         df (pd.DataFrame): Input DataFrame. It is expected to have a time index.
 
